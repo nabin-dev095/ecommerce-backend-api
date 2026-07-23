@@ -3,7 +3,7 @@ import ImageSchema from "./image.model";
 
 const categorySchema = new mongoose.Schema({
   name: {
-    required: [true, "name is required"],
+    required: [true, "name is Required"],
     unique: [true, "category already exists with same name"],
     minLenghth: 3,
     trim: true,
