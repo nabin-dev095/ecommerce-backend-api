@@ -1,0 +1,26 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    "module": "commonjs",
+    "target": "es2022",
+    // For nodejs:
+    // "lib": ["esnext"],
+    "types": ["node"],
+    // and npm install -D @types/node
+
+    // Style Options
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+
+    // Recommended Options
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

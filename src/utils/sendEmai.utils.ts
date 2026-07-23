@@ -1,0 +1,43 @@
+import { ENV_CONFIG } from "../config/env.config";
+import { transporter } from "../config/nodemailer.config";
+
+interface IMailOption {
+  to: string | string[];
+  subject: string;
+  html: string;
+  cc?: string | string[];
+  bcc?: string | string[];
+  attachments?: any[];
+}
+
+export const sendEmail = async ({
+  to,
+  subject,
+  html,
+  cc,
+  bcc,
+  attachments,
+}: IMailOption) => {
+  try {
+    const messageOption: any = {
+      to: to,
+      from: ENV_CONFIG.SMPT_MAIL_FROM,
+      subject: subject,
+      html: html,
+    };
+    if (cc) {
+      messageOption["cc"] = cc;
+    }
+    if (bcc) {
+      messageOption["bcc"] = bcc;
+    }
+    if (attachments) {
+      messageOption["attachments"] = attachments;
+    }
+    await transporter.sendMail(messageOption);
+
+    console.log("email sent");
+  } catch (error) {
+    console.log(error);
+  }
+};
