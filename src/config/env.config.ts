@@ -4,6 +4,7 @@ export const ENV_CONFIG = {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT!!,
     DB_URI: process.env.DB_URI!!,
+    FRONT_END_URL: process.env.FRONT_END_URL!!,
 
 
     //! cloudinary

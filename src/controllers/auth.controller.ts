@@ -8,6 +8,8 @@ import { catchAsync } from "../utils/catch.Async.utils";
 import { uploadFileToCloudinary } from "../utils/cloudinary.util";
 import { generateJwtToken } from "../utils/jwt.utils";
 import { ENV_CONFIG } from "../config/env.config";
+import { sendEmail } from "../utils/sendEmai.utils";
+import { generateAccountCreatedHtml, generateLoginSuccessHtml } from "../utils/emailTemplate.utils";
 
 //* register
 export const register = catchAsync(
@@ -43,6 +45,18 @@ export const register = catchAsync(
 
     // * save user
     await user.save();
+
+    //* send account created email
+    sendEmail({
+      to: user.email,
+      subject: "Account created",
+      html: generateAccountCreatedHtml({
+        full_name: user.full_name,
+        email: user.email,
+        createdAt: new Date(Date.now()),
+
+      }),
+    })
 
     //* converting mongodb doc to js object
     const { password: user_pass, ...rest } = user.toObject();
@@ -87,6 +101,18 @@ export const login = catchAsync(
     res.cookie("access_token", access_token,{
       maxAge:Number(ENV_CONFIG.COOKIE_EXPIRY ?? "7") * 24 * 60 * 60 * 1000, //converting milisecond
       httpOnly: ENV_CONFIG.NODE_ENV === " development" ? false: true,
+    });
+
+    //* send login dectected email
+    sendEmail({
+      to: user.email,
+      subject: "New Login Detected",
+      html: generateLoginSuccessHtml({
+        full_name: user.full_name,
+        email: user.email,
+        loginAt: new Date(Date.now()),
+        userAgent: req.headers["user-agent"] as string,
+      }),
     });
 
 
