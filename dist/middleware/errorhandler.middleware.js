@@ -1,6 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorHandler = void 0;
+const jsonwebtoken_1 = require("jsonwebtoken");
 const errorHandler = (error, req, res, next) => {
+    let statusCode = error?.statusCode ?? 500;
+    let message = error?.message ?? "Internal server error";
+    const status = error?.status ?? "error";
+    const success = false;
+    if (error?.cause?.code === 11000) {
+        statusCode = 409;
+    }
+    if (error instanceof jsonwebtoken_1.JsonWebTokenError) {
+        message = "Invalid token";
+        statusCode = 401;
+    }
+    res.status(statusCode).json({
+        message,
+        status,
+        success,
+        data: null,
+        stack: error?.stack ?? null,
+        errors: error?.errors ?? null,
+    });
 };
 exports.errorHandler = errorHandler;

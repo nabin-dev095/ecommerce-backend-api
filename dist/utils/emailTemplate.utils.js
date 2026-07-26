@@ -1,25 +1,17 @@
-import { ENV_CONFIG } from "../config/env.config";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateLoginSuccessHtml = exports.generateAccountCreatedHtml = void 0;
+const env_config_1 = require("../config/env.config");
 //? format date
-const formatDate = (date: NativeDate) => {
+const formatDate = (date) => {
     const formatttedDate = new Date(date).toLocaleString("en-US", {
         dateStyle: "long",
         timeStyle: "short",
-
     });
     return formatttedDate;
-}
-
-export const generateAccountCreatedHtml = ({
-  full_name,
-  email,
-  createdAt,
-}: {
-  full_name: string;
-  email: string;
-  createdAt: NativeDate;
-}) => {
-  const html = `
+};
+const generateAccountCreatedHtml = ({ full_name, email, createdAt, }) => {
+    const html = `
     <!DOCTYPE html>
     <html>
       <head>
@@ -59,7 +51,7 @@ export const generateAccountCreatedHtml = ({
 
             <div style="text-align:center;margin-top:30px;">
               <a
-                href="${ENV_CONFIG.FRONT_END_URL}/auth/login"
+                href="${env_config_1.ENV_CONFIG.FRONT_END_URL}/auth/login"
                 target= "_blank"
                 style="
                   display:inline-block;
@@ -87,23 +79,12 @@ export const generateAccountCreatedHtml = ({
       </body>
     </html>
   `;
-
-  return html;
+    return html;
 };
-
+exports.generateAccountCreatedHtml = generateAccountCreatedHtml;
 //* generate login successful email html
-export const generateLoginSuccessHtml = ({
-  full_name,
-  email,
-  loginAt,
-  userAgent,
-}: {
-  full_name: string;
-  email: string;
-  loginAt: NativeDate;
-  userAgent: string;
-}) => {
-  const html = `
+const generateLoginSuccessHtml = ({ full_name, email, loginAt, userAgent, }) => {
+    const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -211,6 +192,6 @@ style="background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #f
 </body>
 </html>
 `;
-
-  return html;
+    return html;
 };
+exports.generateLoginSuccessHtml = generateLoginSuccessHtml;

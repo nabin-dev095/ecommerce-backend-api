@@ -5,10 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const errorhandler_middleware_1 = require("./middleware/errorhandler.middleware");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 // npm i -D @types/express
-//* express app instance 
+//* importing routes
+const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+const brand_routes_1 = __importDefault(require("./routes/brand.routes"));
+//* express app instance
 const app = (0, express_1.default)();
 //! using middlewares
+app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
 //! health check route
 app.get("/", (req, res) => {
@@ -16,16 +21,18 @@ app.get("/", (req, res) => {
         message: "server is up & running!!!",
         success: true,
         status: "success",
-        data: null
+        data: null,
     });
 });
 //! using routes
+app.use("/api/v1/auth", auth_routes_1.default);
+app.use("/api/v1/brands", brand_routes_1.default);
 //!  using path not found route
 app.use((req, res, next) => {
     const message = `can not ${req.method} on ${req.path}`;
     res.status(404).json({
         message,
-        status: "'fail"
+        status: "'fail",
     });
 });
 //! error handler middleware
